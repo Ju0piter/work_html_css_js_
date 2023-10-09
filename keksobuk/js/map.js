@@ -3,6 +3,7 @@ console.log("hui");
 var Copy_PlaceMark_DOM = document.querySelector("#map__card__templade").content.querySelector(".map__pin");
 var Map_pins_list_DOM = document.querySelector(".map__pins");
 var Copy_Map_Card_DOM = document.querySelector("#map__card__templade").content.querySelector(".map__card");
+var ads_list_DOM = document.querySelector(".map");
 
 
 var mass_title = 
@@ -128,6 +129,7 @@ var Fun_create_map_card_DOM = function(DOM,mass_advertisement)
     New_DOM.querySelector(".popup__text--capacity").textComtent = mass_advertisement[0].offer.rooms + " комнат/ы для " + mass_advertisement[0].offer.guests + " гостя/гостей";
     New_DOM.querySelector(".popup__text--time").textComtent = "Заезд после "+ mass_advertisement[0].offer.checkin + ", выезд до " + mass_advertisement[0].offer.checkout;
     New_DOM.querySelector(".popup__features").textComtent = mass_advertisement[0].offer.features;
+    New_DOM.querySelector(".popup__avatar").src = mass_advertisement[0].author.avatar;
     
 
 
@@ -141,12 +143,16 @@ var advertisement = Fun_create_advertisement(8,mass_title,mass_type,mass_check_i
 console.log(Fun_create_advertisement(8,mass_title,mass_type,mass_check_in_out,Fun_create_features,mass_features,mass_photos,Fun_gen_random_value));
 
 
-
+ 
 
 
 Fun_create_Placemark_DOM(Copy_PlaceMark_DOM,Map_pins_list_DOM,advertisement,8); 
-var hui = Fun_create_map_card_DOM(Copy_Map_Card_DOM,advertisement)
-console.log(hui.querySelector(".popup__text--time"));    
+var zalupa = Copy_Map_Card_DOM.cloneNode(true); 
+var hui = Fun_create_map_card_DOM(zalupa,advertisement)
+console.log(hui.querySelector(".popup__text--time").textComtent);   
+ 
+ads_list_DOM.appendChild(hui).before(".map__filters-container");  
+
 
 
 
