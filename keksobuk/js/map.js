@@ -120,21 +120,20 @@ var Fun_create_Placemark_DOM = function(DOM,DOM_list,mass_advertisement,items)
     }
 };
 
-var Fun_create_map_card_DOM = function(DOM,mass_advertisement)
+var Fun_create_map_card_DOM = function(DOM,mass_advertisement,ads_list_DOM_el)
 {
-    var New_DOM = DOM.cloneNode(true);
-    New_DOM.querySelector(".popup__title").textComtent = mass_advertisement[0].offer.title;
-    New_DOM.querySelector(".popup__text--address").textComtent = mass_advertisement[0].offer.adress;
-    New_DOM.querySelector(".popup__type").textComtent = mass_advertisement[0].offer.type;
-    New_DOM.querySelector(".popup__text--capacity").textComtent = mass_advertisement[0].offer.rooms + " комнат/ы для " + mass_advertisement[0].offer.guests + " гостя/гостей";
-    New_DOM.querySelector(".popup__text--time").textComtent = "Заезд после "+ mass_advertisement[0].offer.checkin + ", выезд до " + mass_advertisement[0].offer.checkout;
-    New_DOM.querySelector(".popup__features").textComtent = mass_advertisement[0].offer.features;
-    New_DOM.querySelector(".popup__avatar").src = mass_advertisement[0].author.avatar;
-    
+    var New_DOM_1 = DOM.cloneNode(true);
+    New_DOM_1.className = "popup map__card hui";
+    New_DOM_1.querySelector(".popup__title").textContent = mass_advertisement[0].offer.title;
+    New_DOM_1.querySelector(".popup__text--address").textContent = mass_advertisement[0].offer.adress;
+    New_DOM_1.querySelector(".popup__type").textContent = mass_advertisement[0].offer.type;
+    New_DOM_1.querySelector(".popup__text--capacity").textContent = mass_advertisement[0].offer.rooms + " комнат/ы для " + mass_advertisement[0].offer.guests + " гостя/гостей";
+    New_DOM_1.querySelector(".popup__text--time").textContent = "Заезд после "+ mass_advertisement[0].offer.checkin + ", выезд до " + mass_advertisement[0].offer.checkout;
+    New_DOM_1.querySelector(".popup__features").textContent = mass_advertisement[0].offer.features;
+    New_DOM_1.querySelector(".popup__avatar").src = mass_advertisement[0].author.avatar;
+    New_DOM_1.querySelector(".popup__close").textContent = "zakpbIT";
 
-
-
-    return New_DOM;
+    ads_list_DOM_el.appendChild(New_DOM_1).before(".map__pins");  
 
 };
 console.log(Fun_create_features(mass_features));
@@ -148,11 +147,15 @@ console.log(Fun_create_advertisement(8,mass_title,mass_type,mass_check_in_out,Fu
 
 Fun_create_Placemark_DOM(Copy_PlaceMark_DOM,Map_pins_list_DOM,advertisement,8); 
 var zalupa = Copy_Map_Card_DOM.cloneNode(true); 
-var hui = Fun_create_map_card_DOM(zalupa,advertisement)
-console.log(hui.querySelector(".popup__text--time").textComtent);   
- 
-ads_list_DOM.appendChild(hui).before(".map__filters-container");  
+console.log(zalupa);
+Fun_create_map_card_DOM(zalupa,advertisement,ads_list_DOM);
 
+//console.log(hui); 
+//console.log(hui.querySelector(".popup__text--time").textComtent);          
+//console.log(hui); 
+//ads_list_DOM_el.appendChild(New_DOM_1).before(".map__pins"); 
+//ads_list_DOM.appendChild(hui).before(".map__filters-container");
 
+//document.querySelector(".map").remove(".map--faded.") 
 
 
