@@ -2,6 +2,8 @@ console.log("hui");
 
 var Copy_PlaceMark_DOM = document.querySelector("#map__card__templade").content.querySelector(".map__pin");
 var Map_pins_list_DOM = document.querySelector(".map__pins");
+var Copy_Map_Card_DOM = document.querySelector("#map__card__templade").content.querySelector(".map__card");
+
 
 var mass_title = 
 [
@@ -16,7 +18,7 @@ var mass_title =
 ]
 var mass_type = 
 [
-    "palace", "flat", "house","bungalo"
+    "Дворец", "Квартира", "Дом","Бунгало"
 ]
 
 var mass_check_in_out = 
@@ -116,6 +118,23 @@ var Fun_create_Placemark_DOM = function(DOM,DOM_list,mass_advertisement,items)
         DOM_list.appendChild(New_DOM);
     }
 };
+
+var Fun_create_map_card_DOM = function(DOM,mass_advertisement)
+{
+    var New_DOM = DOM.cloneNode(true);
+    New_DOM.querySelector(".popup__title").textComtent = mass_advertisement[0].offer.title;
+    New_DOM.querySelector(".popup__text--address").textComtent = mass_advertisement[0].offer.adress;
+    New_DOM.querySelector(".popup__type").textComtent = mass_advertisement[0].offer.type;
+    New_DOM.querySelector(".popup__text--capacity").textComtent = mass_advertisement[0].offer.rooms + " комнат/ы для " + mass_advertisement[0].offer.guests + " гостя/гостей";
+    New_DOM.querySelector(".popup__text--time").textComtent = "Заезд после "+ mass_advertisement[0].offer.checkin + ", выезд до " + mass_advertisement[0].offer.checkout;
+    New_DOM.querySelector(".popup__features").textComtent = mass_advertisement[0].offer.features;
+    
+
+
+
+    return New_DOM;
+
+};
 console.log(Fun_create_features(mass_features));
 console.log(Fun_gen_random_value());
 var advertisement = Fun_create_advertisement(8,mass_title,mass_type,mass_check_in_out,Fun_create_features,mass_features,mass_photos,Fun_gen_random_value);
@@ -123,8 +142,11 @@ console.log(Fun_create_advertisement(8,mass_title,mass_type,mass_check_in_out,Fu
 
 
 
-console.log(Copy_PlaceMark_DOM);
 
-Fun_create_Placemark_DOM(Copy_PlaceMark_DOM,Map_pins_list_DOM,advertisement,8);
+
+Fun_create_Placemark_DOM(Copy_PlaceMark_DOM,Map_pins_list_DOM,advertisement,8); 
+var hui = Fun_create_map_card_DOM(Copy_Map_Card_DOM,advertisement)
+console.log(hui.querySelector(".popup__text--time"));    
+
 
 
