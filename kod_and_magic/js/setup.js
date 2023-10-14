@@ -1,9 +1,101 @@
 var BlockSetup = document.querySelector('.setup');
-BlockSetup.classList.remove('hidden');
+//BlockSetup.classList.remove('hidden');
 
 var BlockSetupFooter = document.querySelector('.setup-similar');
-BlockSetupFooter.classList.remove('hidden');
+//BlockSetupFooter.classList.remove('hidden');
 
+var OpenSetup = document.querySelector('.setup-open');
+var CloseSetup = document.querySelector('.setup-close');
+var InputUserName = document.querySelector(".setup-user-name");
+var ButtonSetupSubmit = document.querySelector(".setup-submit");
+var SetupWizzard = document.querySelector(".setup-wizard");
+var SetupFireBall = document.querySelector(".setup-fireball-wrap");
+
+SetupFireBall.addEventListener("click", function()
+{
+  SetupFireBall.style.background = Fun_random(Mass_eyesColor);
+}) 
+
+//SetupWizzard.querySelector(".wizard-coat").style.fill = "rgb(255, 0, 0)";
+
+SetupWizzard.querySelector(".wizard-coat").addEventListener("click", function()
+{
+  SetupWizzard.querySelector(".wizard-coat").style.fill = Fun_random(Mass_coatColor) ;
+})
+
+SetupWizzard.querySelector(".wizard-eyes").addEventListener("click", function()
+{
+  SetupWizzard.querySelector(".wizard-eyes").style.fill = Fun_random(Mass_coatColor) ;
+})
+
+
+InputUserName.addEventListener('focus',function()
+{
+  document.removeEventListener("keydown", onPopupEscPress);
+  
+})
+
+InputUserName.addEventListener('blur',function()
+{
+  document.addEventListener("keydown", onPopupEscPress);
+  
+})
+
+ButtonSetupSubmit.addEventListener('click',function()
+{
+  ClosePopup();
+});
+ButtonSetupSubmit.addEventListener("keydown",function(evt)
+{
+  if (evt.keyCode === 13){
+  ClosePopup();}
+});
+
+
+
+OpenSetup.addEventListener('click',function()
+{
+  OpenPopup();
+});
+OpenSetup.addEventListener("keydown",function(evt)
+{
+  if (evt.keyCode === 13){
+  OpenPopup();}
+});
+
+CloseSetup.addEventListener('click',function()
+{
+  ClosePopup();
+});
+
+CloseSetup.addEventListener("keydown",function(evt)
+{
+  if (evt.keyCode === 13){
+  ClosePopup();}
+});
+
+var onPopupEscPress = function(evt)
+{
+  if(evt.keyCode === 27){
+    ClosePopup();
+  }
+};
+
+var ClosePopup = function()
+{
+  BlockSetup.classList.add('hidden');
+  BlockSetupFooter.classList.add('hidden');
+  document.removeEventListener("keydown", onPopupEscPress);
+
+};
+
+var OpenPopup = function()
+{
+  BlockSetup.classList.remove('hidden');
+  BlockSetupFooter.classList.remove('hidden');
+  document.addEventListener("keydown", onPopupEscPress);
+
+};
 var WizardCopy = document.querySelector("#similar-wizard-template").content.querySelector(".setup-similar-item");
 
 var Mass_name = ["Иван","Хуан Себастьян","Мария","Кристоф","Виктор","Юлия","Люпита","Вашингтон",];
@@ -60,3 +152,4 @@ for (var i = 0;i<4;i++){
   var Create_DOM = Fun_Create_DOM(WizardCopy, wizzards);
   Fun_Insert_DOM(SimularList,Create_DOM);
 };
+console.log(Mass_coatColor[0]);
