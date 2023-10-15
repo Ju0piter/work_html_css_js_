@@ -10,22 +10,29 @@ var InputUserName = document.querySelector(".setup-user-name");
 var ButtonSetupSubmit = document.querySelector(".setup-submit");
 var SetupWizzard = document.querySelector(".setup-wizard");
 var SetupFireBall = document.querySelector(".setup-fireball-wrap");
+var SetupWizzardInput = document.querySelector(".setup-wizard-appearance"); 
 
 SetupFireBall.addEventListener("click", function()
 {
-  SetupFireBall.style.background = Fun_random(Mass_eyesColor);
+  let i = Fun_random(Mass_FireBallColor);
+  SetupFireBall.style.background = i;
+  SetupFireBall.querySelector(".setup-fireball-input").value = i;
 }) 
 
-//SetupWizzard.querySelector(".wizard-coat").style.fill = "rgb(255, 0, 0)";
+
 
 SetupWizzard.querySelector(".wizard-coat").addEventListener("click", function()
 {
-  SetupWizzard.querySelector(".wizard-coat").style.fill = Fun_random(Mass_coatColor) ;
+  let i = Fun_random(Mass_coatColor);
+  SetupWizzard.querySelector(".wizard-coat").style.fill = i;
+  SetupWizzardInput.querySelector(".coat-color-input1").value = i;
 })
 
 SetupWizzard.querySelector(".wizard-eyes").addEventListener("click", function()
 {
-  SetupWizzard.querySelector(".wizard-eyes").style.fill = Fun_random(Mass_coatColor) ;
+  let i = Fun_random(Mass_eyesColor);
+  SetupWizzard.querySelector(".wizard-eyes").style.fill = i;
+  SetupWizzardInput.querySelector(".coat-color-input2").value = i;
 })
 
 
@@ -112,6 +119,13 @@ var Mass_eyesColor = ["black",
                       "blue",
                       "yellow",
                       "green"];
+
+var Mass_FireBallColor = ["#ee4830",
+                      "#30a8ee",
+                      "#5ce6c0",
+                      "#e848d5",
+                      "#e6e848"];
+
 
 var Fun_random = function(mass){
   var stroka = mass[Math.floor(Math.random() * mass.length)]
