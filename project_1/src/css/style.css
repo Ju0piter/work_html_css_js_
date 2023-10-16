@@ -1,3 +1,13 @@
-div{
+.pizda{
     background-color: aqua;
+}
+
+button {
+    width: 150px;
+    height: 150px;
+    
+}
+
+.red {
+    background-color: red;
 }

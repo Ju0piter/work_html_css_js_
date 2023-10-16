@@ -4,7 +4,28 @@ var Copy_PlaceMark_DOM = document.querySelector("#map__card__templade").content.
 var Map_pins_list_DOM = document.querySelector(".map__pins");
 var Copy_Map_Card_DOM = document.querySelector("#map__card__templade").content.querySelector(".map__card");
 var ads_list_DOM = document.querySelector(".map");
+var Map_pinsoverlay_main = document.querySelector(".map__pinsoverlay");
 
+
+//------- ОБРАБОТЧИКИ--------
+Map_pinsoverlay_main.addEventListener("mouseup", function(evt)
+{
+    let Xcord = document.documentElement.clientWidth/2;
+    let Ycord = 425;
+    //ads_list_DOM.appendChild(hui).before(".map__filters-container");
+    ads_list_DOM.classList.remove("map--faded");
+    Fun_create_Placemark_DOM(Copy_PlaceMark_DOM,Map_pins_list_DOM,advertisement,8);
+    document.querySelector(".map__pin").style.transform = "translate(" + (evt.pageX -Xcord - 33) + "px, " + (evt.pageY - Ycord - 33) + "px)";
+    console.log(evt.pageX, evt.pageY);  
+    console.log(document.documentElement.clientWidth);
+
+});
+
+
+
+
+
+//--------------------------transform: translate(-50%, -50%);
 
 var mass_title = 
 [
@@ -165,15 +186,17 @@ console.log(Fun_create_advertisement(8,mass_title,mass_type,mass_check_in_out,Fu
  
 
 
-Fun_create_Placemark_DOM(Copy_PlaceMark_DOM,Map_pins_list_DOM,advertisement,8); 
+//Fun_create_Placemark_DOM(Copy_PlaceMark_DOM,Map_pins_list_DOM,advertisement,8); 
 var zalupa = Copy_Map_Card_DOM.cloneNode(true); 
 var hui = Fun_create_map_card_DOM(zalupa,advertisement); 
    
   
  
-ads_list_DOM.appendChild(hui).before(".map__filters-container");   
-document.querySelector(".map").classList.remove(".map--faded");
-    
+//ads_list_DOM.appendChild(hui).before(".map__filters-container");
+ads_list_DOM.classList.remove(".map--faded")
+//document.querySelector(".map").classList.remove("map--faded"); 
+
+
 
 
 
