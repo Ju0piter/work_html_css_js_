@@ -5,20 +5,62 @@ var Map_pins_list_DOM = document.querySelector(".map__pins");
 var Copy_Map_Card_DOM = document.querySelector("#map__card__templade").content.querySelector(".map__card");
 var ads_list_DOM = document.querySelector(".map");
 var Map_pinsoverlay_main = document.querySelector(".map__pinsoverlay");
-
+var chet = 1;
+var chet_pins = 1;
 
 //------- ОБРАБОТЧИКИ--------
-Map_pinsoverlay_main.addEventListener("mouseup", function(evt)
+ads_list_DOM.addEventListener("mouseup", function(evt)
 {
+    
     let Xcord = document.documentElement.clientWidth/2;
     let Ycord = 425;
+    //var zalupa = Copy_Map_Card_DOM.cloneNode(true); 
+    //var hui = Fun_create_map_card_DOM(zalupa,advertisement); 
     //ads_list_DOM.appendChild(hui).before(".map__filters-container");
     ads_list_DOM.classList.remove("map--faded");
-    Fun_create_Placemark_DOM(Copy_PlaceMark_DOM,Map_pins_list_DOM,advertisement,8);
+
+    if (chet == 1) 
+    {
+        Fun_create_Placemark_DOM(Copy_PlaceMark_DOM,Map_pins_list_DOM,advertisement,8);
+        chet = 2;
+        console.log("chet = " + chet);  
+    }
+
+    if (evt.target.classList == "map__pinsoverlay")  
+    {
     document.querySelector(".map__pin").style.transform = "translate(" + (evt.pageX -Xcord - 33) + "px, " + (evt.pageY - Ycord - 33) + "px)";
     console.log(evt.pageX, evt.pageY);  
     console.log(document.documentElement.clientWidth);
+    document.querySelector(".input_adress").placeholder = (evt.pageX -Xcord - 33) + ";" + (evt.pageY - Ycord - 33) ;
+    } 
+});
 
+ads_list_DOM.addEventListener("click", function(evt)
+{
+    
+
+    if (evt.target.classList !== "map__pinsoverlay" )
+    {
+        var targetItem = evt.target;
+        let item_index = parseInt(targetItem.id);
+        let zalupa = Copy_Map_Card_DOM.cloneNode(true); 
+        let hui = Fun_create_map_card_DOM(zalupa,advertisement,item_index); 
+        if (chet_pins == 2)
+        {
+            ads_list_DOM.removeChild(hui);
+            chet_pins = 1;
+        }
+     
+    ads_list_DOM.appendChild(hui);
+    chet_pins =2;
+    document.querySelector(".popup__close").addEventListener("click",function()
+    {
+        ads_list_DOM.removeChild(hui);
+        
+    });
+
+    };
+    
 });
 
 
@@ -148,6 +190,8 @@ var Fun_create_Placemark_DOM = function(DOM,DOM_list,mass_advertisement,items)
     for (var i = 0; i<items;i++)
     {
         var New_DOM = DOM.cloneNode(true);
+        New_DOM.id = i;
+        New_DOM.querySelector("img").id = i;
         New_DOM.style = "left: "+ mass_advertisement[i].location.x +"px; top: "+ mass_advertisement[i].location.y +"px;";
         New_DOM.querySelector("img").src = mass_advertisement[i].author.avatar;
         New_DOM.querySelector("img").alt = mass_advertisement[i].offer.title;
@@ -155,18 +199,18 @@ var Fun_create_Placemark_DOM = function(DOM,DOM_list,mass_advertisement,items)
     }
 };
 
-var Fun_create_map_card_DOM = function(DOM,mass_advertisement)
+var Fun_create_map_card_DOM = function(DOM,mass_advertisement,item)
 {
     var lu_str = Fun_create_li_features(mass_advertisement);
-    var photos_str = "<li><img src='"+mass_advertisement[0].offer.photos[0]+ "'></li>" + "<li><img src='"+mass_advertisement[0].offer.photos[1]+ "'></li>" +"<li><img src='"+mass_advertisement[0].offer.photos[2]+ "'></li>";
+    var photos_str = "<li><img src='"+mass_advertisement[item].offer.photos[0]+ "'></li>" + "<li><img src='"+mass_advertisement[item].offer.photos[1]+ "'></li>" +"<li><img src='"+mass_advertisement[item].offer.photos[2]+ "'></li>";
     var New_DOM = DOM.cloneNode(true);
-    New_DOM.querySelector(".popup__title").textContent = mass_advertisement[0].offer.title;
-    New_DOM.querySelector(".popup__text--address").textContent = mass_advertisement[0].offer.adress;
-    New_DOM.querySelector(".popup__type").textContent = mass_advertisement[0].offer.type;
-    New_DOM.querySelector(".popup__text--capacity").textContent = mass_advertisement[0].offer.rooms + " комнат/ы для " + mass_advertisement[0].offer.guests + " гостя/гостей";
-    New_DOM.querySelector(".popup__text--time").textContent = "Заезд после "+ mass_advertisement[0].offer.checkin + ", выезд до " + mass_advertisement[0].offer.checkout;
-    New_DOM.querySelector(".popup__avatar").src = mass_advertisement[0].author.avatar;
-    New_DOM.querySelector(".popup__price").textContent = mass_advertisement[0].offer.price +" руб./ночь";
+    New_DOM.querySelector(".popup__title").textContent = mass_advertisement[item].offer.title;
+    New_DOM.querySelector(".popup__text--address").textContent = mass_advertisement[item].offer.adress;
+    New_DOM.querySelector(".popup__type").textContent = mass_advertisement[item].offer.type;
+    New_DOM.querySelector(".popup__text--capacity").textContent = mass_advertisement[item].offer.rooms + " комнат/ы для " + mass_advertisement[item].offer.guests + " гостя/гостей";
+    New_DOM.querySelector(".popup__text--time").textContent = "Заезд после "+ mass_advertisement[item].offer.checkin + ", выезд до " + mass_advertisement[item].offer.checkout;
+    New_DOM.querySelector(".popup__avatar").src = mass_advertisement[item].author.avatar;
+    New_DOM.querySelector(".popup__price").textContent = mass_advertisement[item].offer.price +" руб./ночь";
     New_DOM.querySelector(".popup__pictures").innerHTML = "";
     New_DOM.querySelector(".popup__pictures").insertAdjacentHTML( 'beforeend', photos_str);
     New_DOM.querySelector(".popup__features").innerHTML = "";
@@ -187,8 +231,8 @@ console.log(Fun_create_advertisement(8,mass_title,mass_type,mass_check_in_out,Fu
 
 
 //Fun_create_Placemark_DOM(Copy_PlaceMark_DOM,Map_pins_list_DOM,advertisement,8); 
-var zalupa = Copy_Map_Card_DOM.cloneNode(true); 
-var hui = Fun_create_map_card_DOM(zalupa,advertisement); 
+//var zalupa = Copy_Map_Card_DOM.cloneNode(true); 
+//var hui = Fun_create_map_card_DOM(zalupa,advertisement); 
    
   
  
