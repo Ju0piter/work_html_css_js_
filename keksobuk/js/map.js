@@ -5,67 +5,26 @@ var Map_pins_list_DOM = document.querySelector(".map__pins");
 var Copy_Map_Card_DOM = document.querySelector("#map__card__templade").content.querySelector(".map__card");
 var ads_list_DOM = document.querySelector(".map");
 var Map_pinsoverlay_main = document.querySelector(".map__pinsoverlay");
+var Map_pinsoverlay_main_h2 = document.querySelector(".Tokyo");
+var ViewBox_main = document.querySelector(".viewBox");
+var Map_Pin_Main = document.querySelector(".map__pin");
 var chet = 1;
 var chet_pins = 1;
+var StartPinX = -32;
+var StartPinY = -32;
+var StartX = 0;
+var StartY = 0;
 
-//------- ОБРАБОТЧИКИ--------
-ads_list_DOM.addEventListener("mouseup", function(evt)
+//------- ОБРАБОТЧИКИ---------
+Map_Pin_Main.addEventListener("mousedown",function(evt)
 {
-    
-    let Xcord = document.documentElement.clientWidth/2;
-    let Ycord = 425;
-    //var zalupa = Copy_Map_Card_DOM.cloneNode(true); 
-    //var hui = Fun_create_map_card_DOM(zalupa,advertisement); 
-    //ads_list_DOM.appendChild(hui).before(".map__filters-container");
-    ads_list_DOM.classList.remove("map--faded");
-
-    if (chet == 1) 
-    {
-        Fun_create_Placemark_DOM(Copy_PlaceMark_DOM,Map_pins_list_DOM,advertisement,8);
-        chet = 2;
-        console.log("chet = " + chet);  
-    }
-
-    if (evt.target.classList == "map__pinsoverlay")  
-    {
-    document.querySelector(".map__pin").style.transform = "translate(" + (evt.pageX -Xcord - 33) + "px, " + (evt.pageY - Ycord - 33) + "px)";
-    console.log(evt.pageX, evt.pageY);  
-    console.log(document.documentElement.clientWidth);
-    document.querySelector(".input_adress").placeholder = (evt.pageX -Xcord - 33) + ";" + (evt.pageY - Ycord - 33) ;
-    } 
+    onMapPinsoverlayMouseUp(evt)
 });
 
 ads_list_DOM.addEventListener("click", function(evt)
 {
-    
-
-    if (evt.target.classList !== "map__pinsoverlay" )
-    {
-        var targetItem = evt.target;
-        let item_index = parseInt(targetItem.id);
-        let zalupa = Copy_Map_Card_DOM.cloneNode(true); 
-        let hui = Fun_create_map_card_DOM(zalupa,advertisement,item_index); 
-        if (chet_pins == 2)
-        {
-            ads_list_DOM.removeChild(hui);
-            chet_pins = 1;
-        }
-     
-    ads_list_DOM.appendChild(hui);
-    chet_pins =2;
-    document.querySelector(".popup__close").addEventListener("click",function()
-    {
-        ads_list_DOM.removeChild(hui);
-        
-    });
-
-    };
-    
+    onClickMapPin(evt);
 });
-
-
-
-
 
 //--------------------------transform: translate(-50%, -50%);
 
@@ -102,6 +61,65 @@ var mass_features =
     "wifi", "dishwasher", "parking", "washer", "elevator", "conditioner"
 ]
 
+
+var onClickMapPin = function(evt)
+{
+    if (evt.target.classList == "map__pin map_pin_button_img" || evt.target.classList == "map_pin_button_img" )
+    {
+        var targetItem = evt.target;
+        let item_index = parseInt(targetItem.id);
+        let pattern_map_card = Copy_Map_Card_DOM.cloneNode(true); 
+        var map_card = Fun_create_map_card_DOM(pattern_map_card,advertisement,item_index); 
+        if (chet_pins == 2)
+        {
+            let elem = ads_list_DOM.querySelector(".map__card");
+            elem.remove();
+            chet_pins = 1;
+        }
+        ads_list_DOM.appendChild(map_card);
+        chet_pins =2;
+        document.querySelector(".popup__close").addEventListener("click",function()
+        {
+            let elem = ads_list_DOM.querySelector(".map__card");
+            elem.remove();
+            chet_pins = 1;
+        });
+    };
+};
+
+var onMapPinsoverlayMouseUp = function(evt)
+{
+    StartX = evt.clientX;
+    StartY = evt.clientY;
+    StartPinY = document.querySelector(".map__pin").offsetTop;
+    StartPinX = document.querySelector(".map__pin").offsetLeft;
+    document.addEventListener("mousemove", onMouseMove); 
+    document.addEventListener("mouseup", onMouseUp);
+    ads_list_DOM.classList.remove("map--faded");  
+    console.log(document.querySelector(".map__pin").style.transform);
+    document.querySelector(".input_adress").placeholder = (evt.pageX -Xcord - 33) + ";" + (evt.pageY - Ycord - 33);
+};
+
+
+var onMouseUp = function() 
+{
+    document.removeEventListener("mousemove", onMouseMove)
+    if (chet == 1)
+    {
+        Fun_create_Placemark_DOM(Copy_PlaceMark_DOM,Map_pins_list_DOM,advertisement,8);
+        chet = 2;
+    }
+    document.querySelector(".input_adress").placeholder = (document.querySelector(".map__pin").offsetTop) + ";" + (document.querySelector(".map__pin").offsetLeft) ;
+    document.removeEventListener("mouseup", onMouseUp);
+};
+
+var onMouseMove = function(evtMove)
+{
+    document.querySelector(".map__pin").style.top = (StartPinY - (StartY - evtMove.clientY) + "px");
+    document.querySelector(".map__pin").style.left = (StartPinX - (StartX - evtMove.clientX) + "px");
+};
+
+
 var Fun_create_features = function(features)
 {
     var mass_strok = [];
@@ -110,7 +128,6 @@ var Fun_create_features = function(features)
     {
         var stroka = features[i+rand_start]; 
         mass_strok.push(stroka);
-
     }
     return mass_strok;
 };
@@ -127,8 +144,6 @@ var Fun_gen_random_value = function()
     }
     random_value.push(x,y,z);
     return random_value;
-
-
 };
 
 
@@ -167,22 +182,17 @@ var Fun_create_advertisement = function(items,title,type,check_in_out,fun_featur
         mass_objects.push(object);
     }
     return mass_objects;
-
-
 };
 
-var Fun_create_li_features = function(mas_features)
+var Fun_create_li_features = function(mas_features,item)
 {
     var lu_stroka = "";
-    for (var i = 0; i< mas_features[0].offer.features.length ;i++) 
+    for (var i = 0; i< mas_features[item].offer.features.length ;i++) 
     {
-        lu_stroka = lu_stroka + "<li class='feature feature--"+mas_features[0].offer.features[i]+"'></li>"
+        lu_stroka = lu_stroka + "<li class='feature feature--"+mas_features[item].offer.features[i]+"'></li>"
         
     }; 
-    console.log(mas_features[0].offer.features);
     return lu_stroka;
-        
-    
 };
 
 var Fun_create_Placemark_DOM = function(DOM,DOM_list,mass_advertisement,items)
@@ -190,7 +200,9 @@ var Fun_create_Placemark_DOM = function(DOM,DOM_list,mass_advertisement,items)
     for (var i = 0; i<items;i++)
     {
         var New_DOM = DOM.cloneNode(true);
+        New_DOM.classList.add("map_pin_button_img");
         New_DOM.id = i;
+        New_DOM.querySelector("img").classList.add("map_pin_button_img");
         New_DOM.querySelector("img").id = i;
         New_DOM.style = "left: "+ mass_advertisement[i].location.x +"px; top: "+ mass_advertisement[i].location.y +"px;";
         New_DOM.querySelector("img").src = mass_advertisement[i].author.avatar;
@@ -201,7 +213,7 @@ var Fun_create_Placemark_DOM = function(DOM,DOM_list,mass_advertisement,items)
 
 var Fun_create_map_card_DOM = function(DOM,mass_advertisement,item)
 {
-    var lu_str = Fun_create_li_features(mass_advertisement);
+    var lu_str = Fun_create_li_features(mass_advertisement,item);
     var photos_str = "<li><img src='"+mass_advertisement[item].offer.photos[0]+ "'></li>" + "<li><img src='"+mass_advertisement[item].offer.photos[1]+ "'></li>" +"<li><img src='"+mass_advertisement[item].offer.photos[2]+ "'></li>";
     var New_DOM = DOM.cloneNode(true);
     New_DOM.querySelector(".popup__title").textContent = mass_advertisement[item].offer.title;

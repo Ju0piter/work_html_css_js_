@@ -11,6 +11,63 @@ var ButtonSetupSubmit = document.querySelector(".setup-submit");
 var SetupWizzard = document.querySelector(".setup-wizard");
 var SetupFireBall = document.querySelector(".setup-fireball-wrap");
 var SetupWizzardInput = document.querySelector(".setup-wizard-appearance"); 
+var imageX = 0;
+var imageX = 0;
+var startX = 0;
+var startY = 0;
+var dragged = true;
+
+
+console.log(document.querySelector(".overlay").offsetTop);
+
+document.querySelector(".upload").addEventListener("mousedown", function(evt)
+{
+  onMouseDown(evt)
+})
+
+var onMouseDown = function(evtDown)
+{ 
+  imageY = document.querySelector(".overlay").offsetTop;
+  imageX = document.querySelector(".overlay").offsetLeft;
+  startX = evtDown.clientX;
+  startY = evtDown.clientY;
+  dragged = true;
+  document.addEventListener("mousemove", OnMouseMove); 
+  document.addEventListener("mouseup", OnMouseUp);
+  document.querySelector(".upload").addEventListener("click", onClickPreventDefault); 
+};
+
+var OnMouseMove = function(evtMove) 
+{
+  document.querySelector(".overlay").style.top= (imageY - (startY - evtMove.clientY) ) + "px"; 
+  document.querySelector(".overlay").style.left = (imageX - (startX - evtMove.clientX) ) + "px";
+  dragged = false;
+
+
+};
+
+
+var OnMouseUp = function(evtUp) 
+{
+  document.removeEventListener("mousemove", OnMouseMove);
+  document.removeEventListener("mouseup", OnMouseUp);
+  console.log(dragged);
+  if (dragged)
+  {
+    document.querySelector(".upload").removeEventListener("click", onClickPreventDefault);
+   
+  }
+
+  
+};
+
+var onClickPreventDefault = function(evtdef)
+{
+  evtdef.preventDefault();
+};
+
+
+
 
 SetupFireBall.addEventListener("click", function()
 {
