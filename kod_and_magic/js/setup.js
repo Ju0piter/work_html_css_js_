@@ -18,6 +18,15 @@ var startY = 0;
 var dragged = true;
 
 
+var loadFun = function(textelm) 
+
+{
+  console.log(textelm);
+}
+
+
+window.backend.load(loadFun());
+
 console.log(document.querySelector(".overlay").offsetTop);
 
 document.querySelector(".upload").addEventListener("mousedown", function(evt)
