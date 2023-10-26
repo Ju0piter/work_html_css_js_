@@ -18,14 +18,31 @@ var startY = 0;
 var dragged = true;
 
 
-var loadFun = function(textelm) 
 
+var succesHandler = function(wizards)
 {
-  console.log(textelm);
+  var element = document.createDocumentFragment(); 
+  for(var i = 0; i<4; i++)
+  { 
+    element.appendChild(Fun_Render_wizzards(Fun_random(wizards)))  
+  }
+  SimularList.appendChild(element);
+
 }
 
+var errorHandler = function(errorMessage)
+{
+  var node = document.createElement('div');
+  node.style = 'z-index: 100; margin: 0 auto; text-align:center; background-color: red;';
+  node.style.position = 'absolute';
+  node.style.left = 0;
+  node.style.right = 0;
+  node.style.fontSize ='30px';
+  node.textContent = errorMessage;
+  document.body.insertAdjacentElement('afterbegin', node); 
+};
 
-window.backend.load(loadFun());
+window.backend.load(succesHandler, errorHandler);
 
 console.log(document.querySelector(".overlay").offsetTop);
 
@@ -193,9 +210,18 @@ var Mass_FireBallColor = ["#ee4830",
                       "#e6e848"];
 
 
-var Fun_random = function(mass){
+var Fun_random = function(mass){ 
   var stroka = mass[Math.floor(Math.random() * mass.length)]
   return stroka;
+};
+
+var Fun_Render_wizzards = function(wizard)
+{
+  var WizardEllement = WizardCopy.cloneNode(true);
+  WizardEllement.querySelector('.setup-similar-label').textContent = wizard.name;
+  WizardEllement.querySelector('.wizard-coat').style.fill = wizard.colorCoat;
+  return WizardEllement; 
+
 };
 
 var Fun_Create_DOM = function(WizardCopy_El, wizzards_El){
@@ -228,8 +254,9 @@ console.log(wizzards);
 
 var SimularList = document.querySelector(".setup-similar-list"); 
 
-for (var i = 0;i<4;i++){
-  var Create_DOM = Fun_Create_DOM(WizardCopy, wizzards);
-  Fun_Insert_DOM(SimularList,Create_DOM);
-};
-console.log(Mass_coatColor[0]);
+
+// for (var i = 0;i<4;i++){
+//   var Create_DOM = Fun_Create_DOM(WizardCopy, wizzards);
+//   Fun_Insert_DOM(SimularList,Create_DOM);
+// };
+// console.log(Mass_coatColor[0]);

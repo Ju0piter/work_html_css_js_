@@ -10,12 +10,13 @@ window.backend = {
     xhr.open("GET", URL);
     xhr.addEventListener("load", function()
     {
-        console.log(xhr.response);
+        onLoad(xhr.response);
     });
-    // xhr.addEventListener("error", function()
-    // {
-    //     onError(xhr.response);
-    // })
+    xhr.addEventListener("error", function()
+    {
+        onError(xhr.response);
+        console.log("error");
+    })
     xhr.send();
 
 
