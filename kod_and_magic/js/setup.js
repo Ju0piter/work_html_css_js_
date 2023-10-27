@@ -10,7 +10,8 @@ var InputUserName = document.querySelector(".setup-user-name");
 var ButtonSetupSubmit = document.querySelector(".setup-submit");
 var SetupWizzard = document.querySelector(".setup-wizard");
 var SetupFireBall = document.querySelector(".setup-fireball-wrap");
-var SetupWizzardInput = document.querySelector(".setup-wizard-appearance"); 
+var SetupWizzardInput = document.querySelector(".setup-wizard-appearance");
+var SetupWizzardForm = document.querySelector(".setup-wizard-form");
 var imageX = 0;
 var imageX = 0;
 var startX = 0;
@@ -24,7 +25,7 @@ var succesHandler = function(wizards)
   var element = document.createDocumentFragment(); 
   for(var i = 0; i<4; i++)
   { 
-    element.appendChild(Fun_Render_wizzards(Fun_random(wizards)))  
+    element.appendChild(Fun_Render_wizzards(Fun_random(wizards))) 
   }
   SimularList.appendChild(element);
 
@@ -41,6 +42,15 @@ var errorHandler = function(errorMessage)
   node.textContent = errorMessage;
   document.body.insertAdjacentElement('afterbegin', node); 
 };
+
+SetupWizzardForm.addEventListener("submit", function(evt)
+{
+  window.backend.save(new FormData(SetupWizzardForm), function(response)
+  {
+    BlockSetup.classList.add("hidden");
+  },errorHandler)
+  evt.preventDefault();
+})
 
 window.backend.load(succesHandler, errorHandler);
 
@@ -65,11 +75,9 @@ var onMouseDown = function(evtDown)
 
 var OnMouseMove = function(evtMove) 
 {
-  document.querySelector(".overlay").style.top= (imageY - (startY - evtMove.clientY) ) + "px"; 
+  document.querySelector(".overlay").style.top = (imageY - (startY - evtMove.clientY) ) + "px"; 
   document.querySelector(".overlay").style.left = (imageX - (startX - evtMove.clientX) ) + "px";
   dragged = false;
-
-
 };
 
 

@@ -1,28 +1,61 @@
 (function(){
 
 
-var URL = "https://24.javascript.pages.academy/code-and-magick/data";
+var URL_load = "https://24.javascript.pages.academy/code-and-magick/data";
+var URL_upload = "https://24.javascript.pages.academy/code-and-magick";
 window.backend = {
 "load" : function(onLoad,onError)
 {
-    var xhr = new XMLHttpRequest();
+    var xhr = new XMLHttpRequest(); 
     xhr.responseType = "json";
-    xhr.open("GET", URL);
+    xhr.timeout = 10000;
     xhr.addEventListener("load", function()
     {
-        onLoad(xhr.response);
+        if(xhr.status === 200)
+        {
+            onLoad(xhr.response);
+        }
+
+        else
+        {
+            onError("ошибка статус: " + xhr.status + " " + xhr.statusText); 
+        }
+        
+        
     });
     xhr.addEventListener("error", function()
     {
-        onError(xhr.response);
-        console.log("error");
+        onError("ошибка соединения");
     })
+    xhr.addEventListener("timeout", function()
+    {
+        onError("timeout");
+    })
+    xhr.open("GET", URL_load);
     xhr.send();
 
 
 },
 "save" : function(data,onLoad,onError)
 {
+    var xhr = new XMLHttpRequest(); 
+    xhr.responseType = "json";
+    xhr.timeout = 10000;
+    xhr.addEventListener("load", function()
+    {
+        onLoad(xhr.response);
+        alert("Успешно!")
+    });
+    xhr.addEventListener("error", function()
+    {
+        onError("ошибка соединения");
+    })
+    xhr.addEventListener("timeout", function()
+    {
+        onError("timeout");
+    })
+    xhr.open("POST", URL_upload);
+    xhr.send(data);
 
 
 
